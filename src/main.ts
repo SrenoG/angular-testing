@@ -13,6 +13,7 @@ import {
   tap,
   combineLatest,
   take,
+  map,
 } from 'rxjs';
 
 @Component({
@@ -31,18 +32,19 @@ import {
 })
 export class App implements OnInit {
   name = 'Angular';
-  ev = new BehaviorSubject<number>(3);
+  ev = new BehaviorSubject<string>('test');
   ev2 = new BehaviorSubject<number>(3);
   beha = new BehaviorSubject<number>(3);
 
   ngOnInit(): void {
     combineLatest([merge(this.ev, this.ev2), this.beha])
       .pipe(
+        take(5),
         switchMap(([ev, beha]) => {
           return of(beha);
         }),
         tap((beha) => {
-          console.log(2);
+          console.log(beha);
         })
       )
       .subscribe();
@@ -52,7 +54,7 @@ export class App implements OnInit {
     this.beha.next(this.beha.getValue() + 1);
   }
   public startEv() {
-    this.ev.next(0);
+    this.ev.next(this.ev + '1');
   }
   public startEv2() {
     this.ev2.next(1);
