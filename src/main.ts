@@ -37,7 +37,7 @@ export class App implements OnInit {
   beha = new BehaviorSubject<number>(3);
 
   ngOnInit(): void {
-    combineLatest([merge(this.ev, this.ev2), this.beha])
+    forkJoin([merge(this.ev, this.ev2), this.beha])
       .pipe(
         take(5),
         switchMap(([ev, beha]) => {
